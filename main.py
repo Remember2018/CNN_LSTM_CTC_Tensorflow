@@ -150,7 +150,7 @@ def infer(img_path, mode='infer'):
             print('cannot restore')
 
         decoded_expression = []
-        for curr_step in range(total_steps):
+        for curr_step in range(int(total_steps)):
 
             imgs_input = []
             seq_len_input = []
@@ -159,7 +159,7 @@ def infer(img_path, mode='infer'):
                 im = np.reshape(im, [FLAGS.image_height, FLAGS.image_width, FLAGS.image_channel])
 
                 def get_input_lens(seqs):
-                    length = np.array([FLAGS.max_stepsize for _ in seqs], dtype=np.int64)
+                    length = np.array([FLAGS.out_channels for _ in seqs], dtype=np.int64)
 
                     return seqs, length
 
