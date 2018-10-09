@@ -8,8 +8,9 @@ import tensorflow as tf
 import cv2
 
 # +-* + () + 10 digit + blank + space
-num_classes = 3 + 2 + 10 + 1 + 1
-
+# num_classes = 3 + 2 + 10 + 1 + 1
+# . + 10 digit + blank + space
+num_classes = 1 + 10 + 1 + 1
 maxPrintLen = 100
 
 tf.app.flags.DEFINE_boolean('restore', False, 'whether to restore from the latest checkpoint')
@@ -49,7 +50,8 @@ FLAGS = tf.app.flags.FLAGS
 
 # num_batches_per_epoch = int(num_train_samples/FLAGS.batch_size)
 
-charset = '0123456789+-*()'
+# charset = '0123456789+-*()'
+charset = '0123456789.'
 encode_maps = {}
 decode_maps = {}
 for i, char in enumerate(charset, 1):
@@ -76,7 +78,9 @@ class DataIterator:
                 self.image.append(im)
 
                 # image is named as /.../<folder>/00000_abcd.png
-                code = image_name.split('/')[-1].split('_')[1].split('.')[0]
+                # code = image_name.split('/')[-1].split('_')[-1].split('.')[0]
+                code = image_name.split('/')[-1].split('_')[-1].replace('.jpg','')
+                # print(code)
                 code = [SPACE_INDEX if code == SPACE_TOKEN else encode_maps[c] for c in list(code)]
                 self.labels.append(code)
 
