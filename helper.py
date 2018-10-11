@@ -64,7 +64,7 @@ def load_labels(file):
 
 def load_img_path(images_path):
     tmp = os.listdir(images_path)
-    tmp.sort(key=lambda x: int(x.split('.')[0]))
+    # tmp.sort(key=lambda x: int(x.split('.')[0]))
 
     file_names = [images_path + s for s in tmp]
 

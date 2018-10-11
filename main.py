@@ -138,6 +138,7 @@ def infer(img_path, mode='infer'):
     total_steps = len(imgList) / FLAGS.batch_size
 
     config = tf.ConfigProto(allow_soft_placement=True)
+    config.gpu_options.allow_growth = True
     with tf.Session(config=config) as sess:
         sess.run(tf.global_variables_initializer())
 
@@ -185,9 +186,16 @@ def infer(img_path, mode='infer'):
 
                 decoded_expression.append(expression)
 
-        with open('./result.txt', 'a') as f:
-            for code in decoded_expression:
-                f.write(code + '\n')
+        print(decoded_expression)
+        with open('./result.txt', 'w') as f:
+            true_count = 0
+            for ind,code in enumerate(decoded_expression[0:len(imgList)]):
+                img_name = imgList[ind]
+                img_label = img_name.split('_')[-1].replace('.jpg','')
+                if code==img_label:
+                    true_count = true_count + 1
+                f.write('{} {} {}\n'.format(img_name,img_label,code))
+            print('{}/{} = {}'.format(true_count, len(imgList), float(true_count)/len(imgList)))
 
 
 def main(_):
